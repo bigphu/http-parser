@@ -17,14 +17,7 @@ func NewNode() *Node {
 }
 
 func splitPath(path string) []string {
-	// Remove leading and trailing slashes
-	if len(path) > 0 && path[0] == '/' {
-		return splitPath(path[1:])
-	}
-
-	if len(path) > 0 && path[len(path)-1] == '/' {
-		return splitPath(path[:len(path)-1])
-	}
+	path = strings.Trim(path, "/")
 
 	if path == "" {
 		return []string{}
@@ -63,8 +56,7 @@ func (n *Node) String(prefix string) string {
 	}
 	var paths []string
 	for part, child := range n.children {
-		childPath := child.String(prefix + "/" + part)
-		paths = append(paths, childPath)
+		paths = append(paths, child.String(prefix + "/" + part))
 	}
 	
 	return strings.Join(paths, "\n")
