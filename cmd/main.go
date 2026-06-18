@@ -2,43 +2,39 @@ package main
 
 import (
 	"fmt"
-
-	"http-parser/request"
-	"http-parser/response"
-	"http-parser/routing"
-	"http-parser/server"
+	"httpparser"
 )
 
 func main() {	
-	router := routing.NewRouter()
-	sv := server.NewServer("localhost", 8080, router)
+	router := httpparser.NewRouter()
+	sv := httpparser.NewServer("localhost", 8080, router)
 
-	router.Get("/test/auth/v1", func(req *request.Request, res *response.Response) {
+	router.Get("/test/auth/v1", func(req *httpparser.Request, res *httpparser.Response) {
 		fmt.Println("Handler for /test/auth/v1 called")
 		res.WithStatus(200).WithString("Auth v1 successful")
 	})
 	
-	router.Get("/user/u1", func(req *request.Request, res *response.Response) {
+	router.Get("/user/u1", func(req *httpparser.Request, res *httpparser.Response) {
 		fmt.Println("Handler for /user/u1 called")
 		res.WithStatus(200).WithString("Hello, User 1!")
 	})
 	
-	router.Post("/post/new", func(req *request.Request, res *response.Response) {
+	router.Post("/post/new", func(req *httpparser.Request, res *httpparser.Response) {
 		fmt.Println("Handler for /post/new called")
 		res.WithStatus(201).WithString("New post created successfully!")
 	})
 
-	router.Get("/settings", func(req *request.Request, res *response.Response) {
+	router.Get("/settings", func(req *httpparser.Request, res *httpparser.Response) {
 		fmt.Println("Handler for /settings called")
 		res.WithStatus(200).WithString("Settings page data")
 	})
 	
-	router.Get("/user/create", func(req *request.Request, res *response.Response) {
+	router.Get("/user/create", func(req *httpparser.Request, res *httpparser.Response) {
 		fmt.Println("Handler for /user/create called")
 		res.WithStatus(200).WithString("User creation form")
 	})
 
-	router.Get("/////test/auth/v2", func(req *request.Request, res *response.Response) {
+	router.Get("/////test/auth/v2", func(req *httpparser.Request, res *httpparser.Response) {
 		fmt.Println("Handler for /test/auth/v2 called")
 		res.WithStatus(200).WithString("Auth v2 successful")
 	})

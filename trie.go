@@ -1,9 +1,4 @@
-package path
-
-import (
-	"http-parser/request"
-	"http-parser/response"
-)
+package httpparser
 
 type PathTrie struct {
 	root *Node
@@ -15,11 +10,11 @@ func NewPathTrie() *PathTrie {
 	}
 }
 
-func (pt *PathTrie) Insert(path string, handler func(*request.Request, *response.Response)) {
+func (pt *PathTrie) Insert(path string, handler func(*Request, *Response)) {
 	pt.root.Insert(path, handler)
 }
 
-func (pt *PathTrie) Search(path string) func(*request.Request, *response.Response) {
+func (pt *PathTrie) Search(path string) func(*Request, *Response) {
 	return pt.root.Search(path)
 }
 

@@ -1,14 +1,12 @@
-package path
+package httpparser
 
 import (
-	"http-parser/request"
-	"http-parser/response"
 	"strings"
 )
 
 type Node struct {
 	children map[string]*Node
-	handler  func(*request.Request, *response.Response)
+	handler  func(*Request, *Response)
 }
 
 func NewNode() *Node {
@@ -28,7 +26,7 @@ func splitPath(path string) []string {
 	return strings.Split(path, "/")
 }
 
-func (n *Node) Insert(path string, handler func(*request.Request, *response.Response)) {
+func (n *Node) Insert(path string, handler func(*Request, *Response)) {
 	parts := splitPath(path)
 	curr := n
 	for _, part := range parts {
@@ -40,7 +38,7 @@ func (n *Node) Insert(path string, handler func(*request.Request, *response.Resp
 	curr.handler = handler
 }
 
-func (n *Node) Search(path string) func(*request.Request, *response.Response) {
+func (n *Node) Search(path string) func(*Request, *Response) {
 	parts := splitPath(path)
 	curr := n
 	for _, part := range parts {

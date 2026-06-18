@@ -1,11 +1,8 @@
-package server
+package httpparser
 
 import (
 	"bufio"
 	"fmt"
-	"http-parser/request"
-	"http-parser/response"
-	"http-parser/routing"
 	"net"
 	"sync"
 )
@@ -13,12 +10,12 @@ import (
 type Server struct {
 	host string
 	port int
-	router *routing.Router
+	router *Router
 	listener net.Listener
 	wg sync.WaitGroup
 }
 
-func NewServer(host string, port int, router *routing.Router) *Server {
+func NewServer(host string, port int, router *Router) *Server {
 	if host == "" {
 		host = "localhost"
 	}
@@ -28,7 +25,7 @@ func NewServer(host string, port int, router *routing.Router) *Server {
 	}
 
 	if router == nil {
-		router = routing.NewRouter()
+		router = NewRouter()
 	}
 
 	return &Server{
@@ -78,14 +75,14 @@ func (s *Server) handleConnection(conn net.Conn) {
 	reader := bufio.NewReader(conn)
 
 	for {
-		req, err := request.ParseBuffer(reader)
+		req, err := ParseBuffer(reader)
 		if err != nil {
 			break;
 		}
 
 		fmt.Println(req.String())
 
-		res := response.NewResponse()
+		res := NewResponse()
 		s.router.Invoke(req, res)
 
 
