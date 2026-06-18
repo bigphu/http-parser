@@ -1,5 +1,10 @@
 package path
 
+import (
+	"http-parser/request"
+	"http-parser/response"
+)
+
 type PathTrie struct {
 	root *Node
 }
@@ -10,11 +15,11 @@ func NewPathTrie() *PathTrie {
 	}
 }
 
-func (pt *PathTrie) Insert(path string, handler func()) {
+func (pt *PathTrie) Insert(path string, handler func(*request.Request, *response.Response)) {
 	pt.root.Insert(path, handler)
 }
 
-func (pt *PathTrie) Search(path string) func() {
+func (pt *PathTrie) Search(path string) func(*request.Request, *response.Response) {
 	return pt.root.Search(path)
 }
 
@@ -22,9 +27,12 @@ func (pt *PathTrie) String() string {
 	return pt.root.String("")
 }
 
-func (pt *PathTrie) Invoke(path string) {
-	handler := pt.root.Search(path)
-	if handler != nil {
-		handler()
-	}
-}
+// func (pt *PathTrie) Invoke(path string, req *request.Request, res *response.Response) {
+// 	handler := pt.root.Search(path)
+// 	if handler != nil {
+// 		handler(req, res)
+// 	} else {
+// 		fmt.Printf("No handler found for path: %s", path)
+// 		res.WithStatus(404).WithString("404 Not Found: " + path)
+// 	}
+// }
